@@ -1,53 +1,46 @@
-"use server";
-
-import Image from "next/image";
 import { db } from "../../db/client";
-import { activities } from "../../db/schema";
+import { Activity } from "../../db/schema";
 import { sql } from "drizzle-orm";
+import HeroBanner from "../components/HeroBanner";
+import CountriesSection from "../components/CountriesSection";
 
 export default async function Home() {
-	const [activity] = await db
-		.select()
-		.from(activities)
-		.orderBy(sql`RANDOM()`)
-		.limit(1);
+  const result = await db.execute(
+    sql`SELECT id, destination_id, name, description, price, currency, review_count, image_url, is_active, created_at, updated_at FROM activities WHERE is_active = true ORDER BY RANDOM() LIMIT 5`
+  );
+  
+  const rawActivities = (result.rows ?? result) as Record<string, unknown>[];
 
-	if (!activity) {
-		return (
-			<div className="min-h-screen flex items-center justify-center">
-				<p className="text-center">No activities found.</p>
-			</div>
-		);
-	}
+  type ActivityView = Activity;
 
-	return (
-		<div
-			className="min-h-screen w-full bg-cover bg-center flex items-center justify-center"
-			style={{ backgroundImage: `url(${activity.imageUrl})` }}
-		>
-			<div className="backdrop-brightness-50 bg-black/30 w-full h-full flex items-center justify-center">
-				<div className="max-w-3xl p-8 text-center text-white">
-					<h1 className="text-4xl font-bold mb-4">{activity.name}</h1>
-					<p className="text-xl mb-6">
-						{activity.price && activity.currency ? (
-							<span>
-								{activity.price} {activity.currency}
-							</span>
-						) : (
-							<span>Free</span>
-						)}
-					</p>
-					<div className="flex items-center justify-center">
-						<Image
-							src={activity.imageUrl}
-							alt={activity.name}
-							width={800}
-							height={450}
-							className="rounded shadow-lg hidden sm:block"
-						/>
-					</div>
-				</div>
-			</div>
-		</div>
+  // Map snake_case database fields to camelCase for components
+  const randomActivities: ActivityView[] = rawActivities.map((activity) => ({
+    id: String(activity["id"] ?? ""),
+    destinationId: String(activity["destination_id"] ?? activity["destinationId"] ?? ""),
+    name: String(activity["name"] ?? ""),
+    description: String(activity["description"] ?? ""),
+    // Drizzle/pg-core maps numeric to string in select types, keep string here
+    price: String(activity["price"] ?? "0"),
+    currency: String(activity["currency"] ?? ""),
+    reviewCount: Number(activity["review_count"] ?? activity["reviewCount"] ?? 0),
+    imageUrl: String(activity["image_url"] ?? activity["imageUrl"] ?? ""),
+    isActive: Boolean(activity["is_active"] ?? activity["isActive"] ?? true),
+    createdAt: new Date(String(activity["created_at"] ?? activity["createdAt"] ?? "")),
+    updatedAt: new Date(String(activity["updated_at"] ?? activity["updatedAt"] ?? "")),
+  }));
+
+  if (!randomActivities || randomActivities.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-center">No activities found.</p>
+      </div>
+    );
+  }
+
+  return (
+    <main className="min-h-screen">
+      <HeroBanner activities={randomActivities} />
+      <CountriesSection />
+    </main>
 	);
 }
