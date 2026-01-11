@@ -2,10 +2,11 @@
 
 import { Activity } from "../../db/schema";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import NextImage from "next/image";
 
 interface HeroBannerProps {
   activities: Activity[];
-  onPrimaryClick?: (activity: Activity) => void;
   onSecondaryClick?: (activity: Activity) => void;
 }
 
@@ -75,7 +76,6 @@ function extractHighlights(description?: string | null) {
 
 export default function HeroBanner({
   activities,
-  onPrimaryClick,
   onSecondaryClick,
 }: HeroBannerProps) {
   const len = activities?.length ?? 0;
@@ -242,11 +242,13 @@ export default function HeroBanner({
                   {/* prev layer */}
                   {previous && motionPref !== "reduce" ? (
                     prevImg ? (
-                      <img
+                      <NextImage
                         src={prevImg}
                         alt={previous!.name}
+                        fill
                         className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-[420ms] ease-out"
                         style={{ opacity: 0 }}
+                        unoptimized
                       />
                     ) : (
                       <div className="absolute inset-0 bg-slate-200" />
@@ -255,10 +257,12 @@ export default function HeroBanner({
 
                   {/* current layer */}
                   {currentImg ? (
-                    <img
+                    <NextImage
                       src={currentImg}
                       alt={title}
+                      fill
                       className="absolute inset-0 h-full w-full object-cover"
+                      unoptimized
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -439,12 +443,12 @@ export default function HeroBanner({
                 {/* Bottom (fixed) */}
                 <div className="border-t border-black/5 p-5 md:p-6">
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <button
-                      onClick={() => onPrimaryClick?.(current)}
-                      className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    <Link
+                      href={`/activity/${current.id}`}
+                      className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center"
                     >
                       View details
-                    </button>
+                    </Link>
                     <button
                       onClick={() => onSecondaryClick?.(current)}
                       className="rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-900 ring-1 ring-black/10 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"

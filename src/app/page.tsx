@@ -1,19 +1,28 @@
 import { db } from "../../db/client";
-import { Activity } from "../../db/schema";
-import { sql } from "drizzle-orm";
+import { Activity, activities as activitiesTable } from "../../db/schema";
+import { eq } from "drizzle-orm";
 import HeroBanner from "../components/HeroBanner";
 import CountriesSection from "../components/CountriesSection";
+import FAQSection from "../components/FAQSection";
+import ReviewsSection from "@/components/review";
 
 export default async function Home() {
-  // fetch a larger pool so we can filter server-side for activities that
-  // contain bullet-style lines in their description
-  const result = await db.execute(
-    sql`SELECT id, destination_id, name, description, price, currency, review_count, image_url, is_active, created_at, updated_at FROM activities WHERE is_active = true ORDER BY RANDOM() LIMIT 20`
-  );
-  
-  const rawActivities = (result.rows ?? result) as Record<string, unknown>[];
+  // Fetch ALL active activities using Drizzle's query builder
+  let rawActivities: Record<string, unknown>[] = [];
+  try {
+    const rows = await db.select().from(activitiesTable).where(eq(activitiesTable.isActive, true));
+    rawActivities = (rows ?? []) as unknown as Record<string, unknown>[];
+  } catch (err) {
+    // Log detailed error for debugging and show a graceful fallback on the page
+    console.error("Activities query failed:", err);
+    rawActivities = [];
+  }
 
-  type ActivityView = Activity;
+  // Use a view type where dates are serialized as strings (safer across server/client)
+  type ActivityView = Omit<Activity, "createdAt" | "updatedAt"> & {
+    createdAt: string;
+    updatedAt: string;
+  };
 
   // Map snake_case database fields to camelCase for components
   const randomActivities: ActivityView[] = rawActivities.map((activity) => ({
@@ -27,8 +36,8 @@ export default async function Home() {
     reviewCount: Number(activity["review_count"] ?? activity["reviewCount"] ?? 0),
     imageUrl: String(activity["image_url"] ?? activity["imageUrl"] ?? ""),
     isActive: Boolean(activity["is_active"] ?? activity["isActive"] ?? true),
-    createdAt: new Date(String(activity["created_at"] ?? activity["createdAt"] ?? "")),
-    updatedAt: new Date(String(activity["updated_at"] ?? activity["updatedAt"] ?? "")),
+    createdAt: String(activity["created_at"] ?? activity["createdAt"] ?? ""),
+    updatedAt: String(activity["updated_at"] ?? activity["updatedAt"] ?? ""),
   }));
 
   // Helper: detect bullet-like lines in description.
@@ -41,21 +50,29 @@ export default async function Home() {
   // Keep only activities that include bullet points in their description.
   const withBullets = randomActivities.filter((a) => hasBullets(a.description));
 
-  // Limit to 5 items for the hero; if not enough, fall back to whatever we have.
-  const heroActivities = withBullets.slice(0, 5);
-
-  if (!heroActivities || heroActivities.length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-center">No activities found.</p>
-      </div>
-    );
-  }
+  // Deterministic selection for hero: sort by reviewCount desc, then newest
+  const heroActivities = [...withBullets]
+    .sort((a, b) => {
+      const revDiff = (b.reviewCount ?? 0) - (a.reviewCount ?? 0);
+      if (revDiff !== 0) return revDiff;
+      const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return bTime - aTime;
+    })
+    .slice(0, 5);
 
   return (
     <main className="min-h-screen">
-      <HeroBanner activities={heroActivities} />
-      <CountriesSection />
+      {heroActivities.length > 0 ? (
+        <HeroBanner activities={heroActivities as unknown as Activity[]} />
+      ) : (
+        <div className="flex items-center justify-center py-20">
+          <p className="text-center text-gray-600">No featured activities available at the moment.</p>
+        </div>
+      )}
+      <CountriesSection activities={randomActivities as unknown as Activity[]} />
+      <ReviewsSection />
+      <FAQSection />
     </main>
 	);
 }
