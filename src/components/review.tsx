@@ -103,19 +103,19 @@ export default function ReviewsSection({ items }: { items?: Review[] }) {
   // stats and marquee removed (not used)
 
   return (
-    <section className="bg-gradient-to-b from-white via-slate-50 to-white py-16 md:py-24">
+    <section className="bg-gradient-to-b from-white via-slate-50 to-white py-12 sm:py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-2">Reviews from travellers</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">Real feedback on bookings, clarity, and support.</p>
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-gray-900 mb-2">Reviews from travellers</h2>
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">Real feedback on bookings, clarity, and support.</p>
         </div>
 
         {/* Grid of reviews */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {reviews.slice(0, 6).map((r) => (
-            <article key={r.id} className="rounded-2xl bg-white p-6 shadow-md ring-1 ring-black/5 hover:shadow-2xl transition-transform duration-200 hover:-translate-y-1">
-              <div className="flex items-start gap-4">
+            <article key={r.id} className="rounded-2xl bg-white p-4 sm:p-6 shadow-md ring-1 ring-black/5 hover:shadow-2xl transition-transform duration-200 hover:-translate-y-1">
+              <div className="flex items-start gap-3 sm:gap-4">
                 <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center font-extrabold text-lg">
                   {initials(r.name)}
                 </div>

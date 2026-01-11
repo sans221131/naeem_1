@@ -36,6 +36,16 @@ body {
   scrollbar-width: none;  /* Firefox */
 }
 
+/* Scrollbar hide utility for Tailwind */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Animation for success message */
 @keyframes slide-in {
   from {
@@ -50,4 +60,9 @@ body {
 
 .animate-slide-in {
   animation: slide-in 0.3s ease-out;
+}
+
+/* Touch manipulation utility for better mobile interactions */
+.touch-manipulation {
+  touch-action: manipulation;
 }

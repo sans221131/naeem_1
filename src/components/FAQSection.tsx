@@ -130,14 +130,14 @@ export default function FAQSection({ items }: { items?: FAQItem[] }) {
   };
 
   return (
-    <section className="bg-gradient-to-b from-slate-50 to-white py-16 md:py-24">
+    <section className="bg-gradient-to-b from-slate-50 to-white py-12 sm:py-16 md:py-24">
       <div className="mx-auto max-w-4xl px-4">
         {/* Header */}
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-3">
+        <div className="text-center mb-8 sm:mb-10">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-gray-900 mb-3">
             FAQ, but like a conversation
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
             Tap a question → it drops into chat → you get an instant answer.
           </p>
         </div>
@@ -145,14 +145,14 @@ export default function FAQSection({ items }: { items?: FAQItem[] }) {
         {/* Chat card */}
         <div className="rounded-3xl bg-white shadow-2xl ring-1 ring-black/5 overflow-hidden">
           {/* Top bar */}
-          <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-black/5 bg-white">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-extrabold">
+          <div className="flex items-center justify-between gap-2 sm:gap-3 px-4 sm:px-5 py-3 sm:py-4 border-b border-black/5 bg-white">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-sm sm:text-base">
                 ?
               </div>
               <div className="min-w-0">
-                <p className="font-extrabold text-gray-900 leading-tight">Support</p>
-                <p className="text-xs text-gray-500 leading-tight">
+                <p className="font-extrabold text-gray-900 leading-tight text-sm sm:text-base">Support</p>
+                <p className="text-[10px] sm:text-xs text-gray-500 leading-tight">
                   Usually replies instantly
                 </p>
               </div>
@@ -161,15 +161,14 @@ export default function FAQSection({ items }: { items?: FAQItem[] }) {
             <button
               type="button"
               onClick={clearChat}
-              className="rounded-xl px-3 py-2 text-sm font-semibold bg-slate-50 hover:bg-slate-100 text-slate-900 ring-1 ring-black/5"
-            >
+              className="rounded-xl px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold bg-slate-50 hover:bg-slate-100 text-slate-900 ring-1 ring-black/5">
               Clear
             </button>
           </div>
 
           {/* Messages */}
-          <div ref={containerRef} className="px-5 py-5 max-h-[520px] overflow-y-auto bg-gradient-to-b from-white to-slate-50">
-            <div className="space-y-4">
+          <div ref={containerRef} className="px-3 sm:px-5 py-4 sm:py-5 max-h-[400px] sm:max-h-[480px] md:max-h-[520px] overflow-y-auto bg-gradient-to-b from-white to-slate-50">
+            <div className="space-y-3 sm:space-y-4">
               {messages.map((m) => {
                 const isUser = m.role === "user";
 
@@ -180,7 +179,7 @@ export default function FAQSection({ items }: { items?: FAQItem[] }) {
                   >
                     <div
                       className={[
-                        "max-w-[85%] md:max-w-[72%] rounded-3xl px-4 py-3 shadow-sm ring-1",
+                        "max-w-[90%] sm:max-w-[85%] md:max-w-[72%] rounded-3xl px-3 sm:px-4 py-2 sm:py-3 shadow-sm ring-1",
                         isUser
                           ? "bg-slate-900 text-white ring-black/5 rounded-br-lg"
                           : "bg-white text-slate-800 ring-black/5 rounded-bl-lg",
@@ -206,15 +205,15 @@ export default function FAQSection({ items }: { items?: FAQItem[] }) {
           </div>
 
           {/* Quick questions */}
-          <div className="border-t border-black/5 bg-white px-5 py-4">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-sm font-bold text-gray-900">Quick questions</p>
-              <p className="text-xs text-gray-500">
+          <div className="border-t border-black/5 bg-white px-3 sm:px-5 py-3 sm:py-4">
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
+              <p className="text-xs sm:text-sm font-bold text-gray-900">Quick questions</p>
+              <p className="text-[10px] sm:text-xs text-gray-500">
                 {isTyping ? "Answering…" : "Tap to ask"}
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
               {faqItems.map((item, idx) => {
                 const disabled = isTyping; // keep it simple
                 const alreadyAsked = askedQuestions.has(item.question);
@@ -226,7 +225,7 @@ export default function FAQSection({ items }: { items?: FAQItem[] }) {
                     onClick={() => ask(item)}
                     disabled={disabled}
                     className={[
-                      "rounded-full px-4 py-2 text-sm font-semibold transition-all",
+                      "rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-all",
                       "ring-1 ring-black/10",
                       disabled
                         ? "bg-slate-100 text-slate-400 cursor-not-allowed"

@@ -28,21 +28,21 @@ export default function BookingCard({ activity, formatPrice }: BookingCardProps)
   const numericPrice = Number.isFinite(price) ? price : 0;
 
   return (
-    <div className="bg-white rounded-2xl shadow-2xl ring-1 ring-black/5 overflow-hidden">
+    <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl ring-1 ring-black/5 overflow-hidden">
       {/* Price Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 sm:p-6">
         <div className="text-center">
-          <p className="text-blue-100 text-sm font-semibold mb-1">Starting from</p>
-          <p className="text-4xl font-black text-white">{formatPrice}</p>
-          <p className="text-blue-100 text-sm mt-1">per person</p>
+          <p className="text-blue-100 text-xs sm:text-sm font-semibold mb-1">Starting from</p>
+          <p className="text-2xl sm:text-3xl md:text-4xl font-black text-white">{formatPrice}</p>
+          <p className="text-blue-100 text-xs sm:text-sm mt-1">per person</p>
         </div>
       </div>
 
       {/* Booking Form */}
-      <div className="p-6 space-y-5">
+      <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
         {/* Date Selection */}
         <div>
-          <label htmlFor="date" className="block text-sm font-bold text-gray-900 mb-2">
+          <label htmlFor="date" className="block text-xs sm:text-sm font-bold text-gray-900 mb-2">
             Select Date
           </label>
           <input
@@ -51,20 +51,20 @@ export default function BookingCard({ activity, formatPrice }: BookingCardProps)
             min={minDate}
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
           />
         </div>
 
         {/* Adults */}
         <div>
-          <label htmlFor="adults" className="block text-sm font-bold text-gray-900 mb-2">
+          <label htmlFor="adults" className="block text-xs sm:text-sm font-bold text-gray-900 mb-2">
             Adults (18+)
           </label>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               type="button"
               onClick={() => setAdults(Math.max(1, adults - 1))}
-              className="w-10 h-10 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 transition"
+              className="w-8 h-8 sm:w-10 sm:h-10 text-sm sm:text-base rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 transition"
             >
               −
             </button>
@@ -74,12 +74,12 @@ export default function BookingCard({ activity, formatPrice }: BookingCardProps)
               min="1"
               value={adults}
               onChange={(e) => setAdults(Math.max(1, parseInt(e.target.value) || 1))}
-              className="flex-1 text-center px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none font-semibold"
+              className="flex-1 text-center px-2 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none font-semibold"
             />
             <button
               type="button"
               onClick={() => setAdults(adults + 1)}
-              className="w-10 h-10 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 transition"
+              className="w-8 h-8 sm:w-10 sm:h-10 text-sm sm:text-base rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 transition"
             >
               +
             </button>
@@ -88,14 +88,14 @@ export default function BookingCard({ activity, formatPrice }: BookingCardProps)
 
         {/* Children */}
         <div>
-          <label htmlFor="children" className="block text-sm font-bold text-gray-900 mb-2">
+          <label htmlFor="children" className="block text-xs sm:text-sm font-bold text-gray-900 mb-2">
             Children (0-17)
           </label>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               type="button"
               onClick={() => setChildren(Math.max(0, children - 1))}
-              className="w-10 h-10 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 transition"
+              className="w-8 h-8 sm:w-10 sm:h-10 text-sm sm:text-base rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 transition"
             >
               −
             </button>
@@ -105,12 +105,12 @@ export default function BookingCard({ activity, formatPrice }: BookingCardProps)
               min="0"
               value={children}
               onChange={(e) => setChildren(Math.max(0, parseInt(e.target.value) || 0))}
-              className="flex-1 text-center px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none font-semibold"
+              className="flex-1 text-center px-2 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none font-semibold"
             />
             <button
               type="button"
               onClick={() => setChildren(children + 1)}
-              className="w-10 h-10 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 transition"
+              className="w-8 h-8 sm:w-10 sm:h-10 text-sm sm:text-base rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 transition"
             >
               +
             </button>
@@ -118,10 +118,10 @@ export default function BookingCard({ activity, formatPrice }: BookingCardProps)
         </div>
 
         {/* Total */}
-        <div className="pt-4 border-t-2 border-gray-100">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-gray-600 font-semibold">Total</span>
-            <span className="text-2xl font-black text-gray-900">{formatPrice}</span>
+        <div className="pt-3 sm:pt-4 border-t-2 border-gray-100">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <span className="text-sm sm:text-base text-gray-600 font-semibold">Total</span>
+            <span className="text-xl sm:text-2xl font-black text-gray-900">{formatPrice}</span>
           </div>
         </div>
 
@@ -137,7 +137,7 @@ export default function BookingCard({ activity, formatPrice }: BookingCardProps)
             imageUrl: activity.imageUrl || undefined,
           }}
           variant="primary"
-          className="w-full !py-4 text-lg mb-3"
+          className="w-full !py-3 sm:!py-4 text-base sm:text-lg mb-2 sm:mb-3"
         />
 
         {/* Book Now Button */}
@@ -145,7 +145,7 @@ export default function BookingCard({ activity, formatPrice }: BookingCardProps)
           type="button"
           onClick={handleBooking}
           disabled={!selectedDate}
-          className="w-full py-4 rounded-xl bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 disabled:from-gray-100 disabled:to-gray-200 text-gray-900 font-bold text-lg shadow-md hover:shadow-lg disabled:cursor-not-allowed transition-all duration-300"
+          className="w-full py-3 sm:py-4 text-base sm:text-lg rounded-xl bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 disabled:from-gray-100 disabled:to-gray-200 text-gray-900 font-bold shadow-md hover:shadow-lg disabled:cursor-not-allowed transition-all duration-300"
         >
           {selectedDate ? "Book Now" : "Select Date to Continue"}
         </button>
