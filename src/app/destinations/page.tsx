@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import AddToCartButton from "@/components/AddToCartButton";
 
 interface Country {
   id: string;
@@ -85,43 +88,64 @@ export default function DestinationsPage() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {countries.map((country) => (
-            <Link
+            <div
               key={country.id}
-              href={`/destination/${country.id}`}
-              className="group relative h-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 ring-1 ring-black/5 hover:ring-blue-500/20"
+              className="group relative h-80 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 ring-1 ring-black/5 hover:ring-blue-500/20 bg-white"
             >
-              {/* Image */}
-              <div className="absolute inset-0">
-                <Image
-                  src={country.image}
-                  alt={country.name}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+              {/* Image Link */}
+              <Link
+                href={`/destination/${country.id}`}
+                className="absolute inset-0"
+              >
+                <div className="absolute inset-0">
+                  <Image
+                    src={country.image}
+                    alt={country.name}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col justify-end p-5 pb-20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-3xl">{country.flag}</span>
+                  </div>
+                  <h3 className="text-2xl font-black text-white mb-1 group-hover:text-blue-300 transition-colors">
+                    {country.name}
+                  </h3>
+                  <div className="flex items-center gap-2 text-white/80 text-sm">
+                    <span>Explore activities</span>
+                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Hover Effect Border */}
+                <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-500/30 rounded-2xl transition-colors pointer-events-none" />
+              </Link>
+
+              {/* Add to Cart Button */}
+              <div className="absolute bottom-5 left-5 right-5 z-10">
+                <AddToCartButton
+                  item={{
+                    id: `destination-${country.id}`,
+                    type: "destination",
+                    name: country.name,
+                    destinationId: country.id,
+                    price: 0,
+                    currency: "USD",
+                    imageUrl: country.image,
+                  }}
+                  variant="secondary"
+                  className="w-full"
                 />
               </div>
-
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-              {/* Content */}
-              <div className="absolute inset-0 flex flex-col justify-end p-5">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-3xl">{country.flag}</span>
-                </div>
-                <h3 className="text-2xl font-black text-white mb-1 group-hover:text-blue-300 transition-colors">
-                  {country.name}
-                </h3>
-                <div className="flex items-center gap-2 text-white/80 text-sm">
-                  <span>Explore activities</span>
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Hover Effect Border */}
-              <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-500/30 rounded-2xl transition-colors" />
-            </Link>
+            </div>
           ))}
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Activity } from "../../../../db/schema";
+import AddToCartButton from "@/components/AddToCartButton";
 
 interface BookingCardProps {
   activity: Activity;
@@ -22,6 +23,9 @@ export default function BookingCard({ activity, formatPrice }: BookingCardProps)
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const minDate = tomorrow.toISOString().split("T")[0];
+
+  const price = typeof activity.price === "string" ? parseFloat(activity.price) : Number(activity.price);
+  const numericPrice = Number.isFinite(price) ? price : 0;
 
   return (
     <div className="bg-white rounded-2xl shadow-2xl ring-1 ring-black/5 overflow-hidden">
@@ -121,12 +125,27 @@ export default function BookingCard({ activity, formatPrice }: BookingCardProps)
           </div>
         </div>
 
+        {/* Add to Cart Button */}
+        <AddToCartButton
+          item={{
+            id: activity.id,
+            type: "activity",
+            name: activity.name,
+            destinationId: activity.destinationId,
+            price: numericPrice,
+            currency: activity.currency,
+            imageUrl: activity.imageUrl || undefined,
+          }}
+          variant="primary"
+          className="w-full !py-4 text-lg mb-3"
+        />
+
         {/* Book Now Button */}
         <button
           type="button"
           onClick={handleBooking}
           disabled={!selectedDate}
-          className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-300 disabled:to-gray-400 text-white font-bold text-lg shadow-lg hover:shadow-xl disabled:cursor-not-allowed transition-all duration-300"
+          className="w-full py-4 rounded-xl bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 disabled:from-gray-100 disabled:to-gray-200 text-gray-900 font-bold text-lg shadow-md hover:shadow-lg disabled:cursor-not-allowed transition-all duration-300"
         >
           {selectedDate ? "Book Now" : "Select Date to Continue"}
         </button>

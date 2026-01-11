@@ -98,17 +98,20 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-gray-400">
-            © 2026 YourBrand Tours. All rights reserved.
-          </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="/privacy" className="text-sm text-gray-400 hover:text-white">
-              Privacy Policy
-            </a>
-            <a href="/terms" className="text-sm text-gray-400 hover:text-white">
-              Terms & Conditions
-            </a>
+        <div className="border-t border-gray-800 mt-8 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+            <p className="text-sm text-gray-400">
+              © 2026 YourBrand Tours. All rights reserved.
+            </p>
+            <div className="flex flex-wrap gap-4 items-center">
+              <a href="/contact" className="inline-block bg-gray-800 hover:bg-gray-700 rounded-lg py-2 px-4 text-sm text-gray-200 hover:text-white">Contact Us</a>
+              <a href="/privacy" className="text-sm text-gray-400 hover:text-white">
+                Privacy Policy
+              </a>
+              <a href="/terms" className="text-sm text-gray-400 hover:text-white">
+                Terms & Conditions
+              </a>
+            </div>
           </div>
         </div>
       </div>

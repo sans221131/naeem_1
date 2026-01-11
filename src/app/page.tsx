@@ -5,6 +5,7 @@ import HeroBanner from "../components/HeroBanner";
 import CountriesSection from "../components/CountriesSection";
 import FAQSection from "../components/FAQSection";
 import ReviewsSection from "@/components/review";
+import ContactButton from "@/components/ContactButton";
 
 export default async function Home() {
   // Fetch ALL active activities using Drizzle's query builder
@@ -73,6 +74,9 @@ export default async function Home() {
       <CountriesSection activities={randomActivities as unknown as Activity[]} />
       <ReviewsSection />
       <FAQSection />
+      
+      {/* Floating Contact Button */}
+      <ContactButton variant="floating" sourcePage="/" />
     </main>
 	);
 }
