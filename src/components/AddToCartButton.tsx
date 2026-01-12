@@ -25,18 +25,18 @@ export default function AddToCartButton({
     }
   };
 
-  const baseClasses = "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200";
+  const baseClasses = "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 smooth-hover";
   
   const variantClasses = {
     primary: inCart
-      ? "bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow-lg"
-      : "bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl",
+      ? "bg-[#0EA5A4] hover:bg-[#0EA5A4]/90 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl smooth-hover"
+      : "bg-gradient-to-r from-[#0EA5A4] to-[#0EA5A4]/90 hover:from-[#0EA5A4]/90 hover:to-[#0EA5A4] text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl smooth-hover",
     secondary: inCart
-      ? "bg-green-100 text-green-700 border-2 border-green-300 px-4 py-2 rounded-lg"
-      : "bg-white text-blue-600 border-2 border-blue-200 hover:border-blue-400 px-4 py-2 rounded-lg hover:bg-blue-50",
+      ? "bg-[#0EA5A4]/10 text-[#0EA5A4] border-2 border-[#0EA5A4]/30 px-4 py-2 rounded-lg smooth-hover"
+      : "bg-white text-[#0EA5A4] border-2 border-[#E7E2D9] hover:border-[#0EA5A4] px-4 py-2 rounded-lg hover:bg-[#FAF7F2] smooth-hover",
     small: inCart
-      ? "bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm"
-      : "bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm",
+      ? "bg-[#0EA5A4] text-white px-3 py-1.5 rounded-lg text-sm smooth-hover"
+      : "bg-gradient-to-r from-[#0EA5A4] to-[#0EA5A4]/90 hover:from-[#0EA5A4]/90 hover:to-[#0EA5A4] text-white px-3 py-1.5 rounded-lg text-sm smooth-hover",
   };
 
   return (

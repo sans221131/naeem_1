@@ -78,7 +78,7 @@ function Stars({ rating }: { rating: number }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <svg
           key={i}
-          className={`h-4 w-4 ${i < rating ? "text-yellow-500" : "text-slate-200"}`}
+          className={`h-4 w-4 transition-colors ${i < rating ? "text-[#F97316]" : "text-[#E7E2D9]"}`}
           viewBox="0 0 20 20"
           fill="currentColor"
           aria-hidden="true"
@@ -103,34 +103,34 @@ export default function ReviewsSection({ items }: { items?: Review[] }) {
   // stats and marquee removed (not used)
 
   return (
-    <section className="bg-gradient-to-b from-white via-slate-50 to-white py-12 sm:py-16 md:py-24">
+    <section className="bg-gradient-to-b from-white via-[#FAF7F2] to-white py-12 sm:py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4">
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-8">
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-gray-900 mb-2">Reviews from travellers</h2>
-          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">Real feedback on bookings, clarity, and support.</p>
+        <div className="text-center mb-6 sm:mb-8 animate-fade-in">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-[#0F172A] mb-2">Reviews from travellers</h2>
+          <p className="text-base sm:text-lg text-[#64748B] max-w-2xl mx-auto">Real feedback on bookings, clarity, and support.</p>
         </div>
 
         {/* Grid of reviews */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {reviews.slice(0, 6).map((r) => (
-            <article key={r.id} className="rounded-2xl bg-white p-4 sm:p-6 shadow-md ring-1 ring-black/5 hover:shadow-2xl transition-transform duration-200 hover:-translate-y-1">
+          {reviews.slice(0, 6).map((r, idx) => (
+            <article key={r.id} className="rounded-2xl bg-white p-4 sm:p-6 shadow-md ring-1 ring-[#E7E2D9] hover:shadow-2xl transition-all smooth-hover hover:-translate-y-1 animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
               <div className="flex items-start gap-3 sm:gap-4">
-                <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center font-extrabold text-lg">
+                <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[#0EA5A4] to-[#0EA5A4]/90 text-white flex items-center justify-center font-extrabold text-lg shadow-lg animate-scale-in">
                   {initials(r.name)}
                 </div>
                 <div className="min-w-0">
-                  <p className="font-semibold text-slate-900 truncate">{r.name}</p>
-                  <p className="text-xs text-slate-500 truncate">{r.location ?? 'Traveller'}{r.destination ? ` • ${r.destination}` : ''}</p>
+                  <p className="font-semibold text-[#0F172A] truncate">{r.name}</p>
+                  <p className="text-xs text-[#64748B] truncate">{r.location ?? 'Traveller'}{r.destination ? ` • ${r.destination}` : ''}</p>
                 </div>
                 <div className="ml-auto text-right">
                   <Stars rating={r.rating} />
-                  {r.verified ? <div className="text-xs text-emerald-700 font-semibold">Verified</div> : null}
+                  {r.verified ? <div className="text-xs text-[#0EA5A4] font-semibold">Verified</div> : null}
                 </div>
               </div>
 
-              <h4 className="mt-4 text-sm font-semibold text-slate-800">{r.title}</h4>
-              <p className="mt-2 text-sm text-slate-700 leading-relaxed">{r.text}</p>
+              <h4 className="mt-4 text-sm font-semibold text-[#0F172A]">{r.title}</h4>
+              <p className="mt-2 text-sm text-[#64748B] leading-relaxed">{r.text}</p>
             </article>
           ))}
         </div>
