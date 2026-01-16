@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import AddToCartButton from "@/components/AddToCartButton";
 import type { Activity } from "@/../../db/schema";
 
 interface ActivityCardProps {
@@ -23,12 +22,9 @@ export default function ActivityCard({ activity, destination, formatPrice }: Act
     return cleaned.length > maxLength ? `${cleaned.slice(0, maxLength)}…` : cleaned;
   };
 
-  const price = typeof activity.price === "string" ? parseFloat(activity.price) : Number(activity.price);
-  const numericPrice = Number.isFinite(price) ? price : 0;
-
   return (
-    <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 ring-1 ring-[#E7E2D9] hover:ring-[#0EA5A4]/50 hover:-translate-y-1 smooth-hover animate-fade-in">
-      <Link href={`/activity/${activity.id}`} className="block">
+    <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 ring-1 ring-[#E7E2D9] hover:ring-[#0EA5A4]/50 hover:-translate-y-1 smooth-hover animate-fade-in flex flex-col h-full">
+      <Link href={`/activity/${activity.id}`} className="block flex-shrink-0">
         {/* Image */}
         <div className="relative h-56 bg-gradient-to-br from-[#FAF7F2] to-[#E7E2D9] overflow-hidden">
           {activity.imageUrl ? (
@@ -75,34 +71,20 @@ export default function ActivityCard({ activity, destination, formatPrice }: Act
       </Link>
 
       {/* Content */}
-      <div className="p-5">
+      <div className="p-5 flex flex-col flex-grow">
         <Link href={`/activity/${activity.id}`}>
           <h3 className="font-bold text-lg text-[#0F172A] mb-2 line-clamp-2 group-hover:text-[#0EA5A4] transition-colors smooth-hover">
             {activity.name}
           </h3>
-          <p className="text-sm text-[#64748B] line-clamp-3 leading-relaxed mb-4">
+          <p className="text-sm text-[#64748B] line-clamp-3 leading-relaxed mb-4 flex-grow">
             {truncate(activity.description, 120)}
           </p>
         </Link>
         
-        <div className="flex flex-col gap-2">
-          <AddToCartButton
-            item={{
-              id: activity.id,
-              type: "activity",
-              name: activity.name,
-              destinationId: activity.destinationId,
-              destinationName: destination?.name,
-              price: numericPrice,
-              currency: activity.currency,
-              imageUrl: activity.imageUrl || undefined,
-            }}
-            variant="primary"
-            className="w-full"
-          />
+        <div className="mt-auto">
           <Link
             href={`/activity/${activity.id}`}
-            className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#FAF7F2] to-white hover:from-white hover:to-[#FAF7F2] text-[#0F172A] font-semibold text-sm transition-all duration-300 ring-1 ring-[#E7E2D9] hover:ring-[#0EA5A4] hover:shadow-md text-center smooth-hover"
+            className="w-full h-10 flex items-center justify-center py-2.5 rounded-xl bg-gradient-to-r from-[#FAF7F2] to-white hover:from-white hover:to-[#FAF7F2] text-[#0F172A] font-semibold text-sm transition-all duration-300 ring-1 ring-[#E7E2D9] hover:ring-[#0EA5A4] hover:shadow-md text-center smooth-hover"
           >
             View Details →
           </Link>

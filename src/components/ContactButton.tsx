@@ -12,7 +12,6 @@ interface ContactButtonProps {
 
 export default function ContactButton({ 
   variant = "primary", 
-  sourcePage = "/", 
   className = "" 
 }: ContactButtonProps) {
   const [showForm, setShowForm] = useState(false);

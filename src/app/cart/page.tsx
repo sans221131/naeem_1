@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
 import Image from "next/image";
@@ -203,7 +205,7 @@ export default function CartPage() {
 
                 {currencies.map(currency => {
                   const currencyItems = items.filter(item => item.currency === currency);
-                  const currencyTotal = currencyItems.reduce((sum, item) => sum + item.price, 0);
+                  const currencyTotal = currencyItems.reduce((sum, item) => sum + Number(item.price), 0);
                   
                   if (currencyTotal === 0) return null;
                   
@@ -218,8 +220,8 @@ export default function CartPage() {
                 <div className="pt-4 border-t-2 border-[#E7E2D9]">
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-bold text-[#0F172A]">Total</span>
-                    <span className="text-2xl font-black text-[#0F172A]">
-                      {currencies.length === 1 && items.some(item => item.price > 0)
+                      <span className="text-2xl font-black text-[#0F172A]">
+                      {currencies.length === 1 && items.some(item => Number(item.price) > 0)
                         ? `${currencies[0]} ${totalPrice.toFixed(2)}`
                         : 'Mixed'}
                     </span>

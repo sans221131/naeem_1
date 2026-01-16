@@ -1,3 +1,5 @@
+import ContactButton from "./ContactButton";
+
 export default function Footer() {
   return (
     <footer className="bg-[#0F172A] text-white">
@@ -104,7 +106,7 @@ export default function Footer() {
               © 2026 YourBrand Tours. All rights reserved.
             </p>
             <div className="flex flex-wrap gap-4 items-center">
-              <a href="/contact" className="inline-block bg-gradient-to-r from-[#0EA5A4] to-[#0EA5A4]/90 hover:from-[#0EA5A4]/90 hover:to-[#0EA5A4] rounded-lg py-2 px-4 text-sm text-white smooth-hover shadow-lg hover:shadow-xl transition-all">Contact Us</a>
+              <ContactButton variant="primary" className="inline-block py-2 px-4 text-sm" />
               <a href="/privacy" className="text-sm text-[#64748B] hover:text-[#0EA5A4] smooth-hover transition-colors">
                 Privacy Policy
               </a>

@@ -7,7 +7,6 @@ import NextImage from "next/image";
 
 interface HeroBannerProps {
   activities: Activity[];
-  onSecondaryClick?: (activity: Activity) => void;
 }
 
 /**
@@ -76,7 +75,6 @@ function extractHighlights(description?: string | null) {
 
 export default function HeroBanner({
   activities,
-  onSecondaryClick,
 }: HeroBannerProps) {
   const len = activities?.length ?? 0;
   const [active, setActive] = useState(0);
@@ -443,19 +441,13 @@ export default function HeroBanner({
 
                 {/* Bottom (fixed) */}
                 <div className="border-t border-[#E7E2D9] p-4 sm:p-5 md:p-6">
-                  <div className="grid gap-2 sm:gap-3 sm:grid-cols-2">
+                  <div className="grid gap-2 sm:gap-3">
                     <Link
                       href={`/activity/${current.id}`}
                       className="rounded-2xl bg-[#0EA5A4] px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white hover:bg-[#0EA5A4]/90 focus:outline-none focus:ring-2 focus:ring-[#0EA5A4] text-center smooth-hover"
                     >
                       View details
                     </Link>
-                    <button
-                      onClick={() => onSecondaryClick?.(current)}
-                      className="rounded-2xl bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-[#0F172A] ring-1 ring-[#E7E2D9] hover:bg-[#FAF7F2] focus:outline-none focus:ring-2 focus:ring-[#0EA5A4] smooth-hover"
-                    >
-                      Add to shortlist
-                    </button>
                   </div>
 
                   <p className="mt-3 text-xs text-[#64748B]">

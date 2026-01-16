@@ -2,7 +2,15 @@
 
 import { useState } from "react";
 import { X, Mail, Phone, User, MessageSquare } from "lucide-react";
-import type { CartItem } from "@/contexts/CartContext";
+
+interface CartItem {
+  id: string;
+  name: string;
+  price: string | number;
+  currency?: string;
+  type?: string;
+  destinationName?: string;
+}
 
 interface ContactFormProps {
   onClose: () => void;
@@ -63,61 +71,61 @@ export default function ContactForm({ onClose, cartItems, onSuccess }: ContactFo
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full my-8 animate-scale-in">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-3 overflow-y-auto animate-fade-in">
+      <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full my-4 animate-scale-in">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#0EA5A4] to-[#0EA5A4]/90 text-white p-6 flex items-center justify-between rounded-t-2xl">
+        <div className="bg-gradient-to-r from-[#0EA5A4] to-[#0EA5A4]/90 text-white p-4 flex items-center justify-between rounded-t-xl">
           <div>
-            <h2 className="text-2xl font-black mb-1">Contact Us</h2>
-            <p className="text-white/80 text-sm">We&apos;ll get back to you within 24 hours</p>
+            <h2 className="text-lg font-black mb-0.5">Contact Us</h2>
+            <p className="text-white/80 text-xs">We&apos;ll get back to you within 24 hours</p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-lg smooth-hover"
+            className="p-1.5 hover:bg-white/10 rounded-md smooth-hover"
             aria-label="Close"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-5 max-h-[calc(90vh-100px)] overflow-y-auto">        {/* Cart Items Summary */}
+        <form onSubmit={handleSubmit} className="p-4 space-y-3 max-h-[calc(85vh-80px)] overflow-y-auto">        {/* Cart Items Summary */}
           {cartItems && cartItems.length > 0 && (
-            <div className="bg-gradient-to-br from-[#FAF7F2] to-white border-2 border-[#E7E2D9] rounded-xl p-5 animate-fade-in">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-bold text-[#0F172A]">Your Selected Items</h3>
-                <span className="px-3 py-1 bg-[#0EA5A4] text-white text-xs font-bold rounded-full">
+            <div className="bg-gradient-to-br from-[#FAF7F2] to-white border border-[#E7E2D9] rounded-lg p-3 animate-fade-in">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-bold text-[#0F172A] text-sm">Your Selected Items</h3>
+                <span className="px-2 py-0.5 bg-[#0EA5A4] text-white text-[10px] font-bold rounded-full">
                   {cartItems.length} {cartItems.length === 1 ? 'Item' : 'Items'}
                 </span>
               </div>
-              <div className="space-y-2 max-h-48 overflow-y-auto">
+              <div className="space-y-1.5 max-h-36 overflow-y-auto">
                 {cartItems.map((item) => (
-                  <div key={item.id} className="bg-white/60 rounded-lg p-3 border border-[#E7E2D9]">
+                  <div key={item.id} className="bg-white/60 rounded-md p-2 border border-[#E7E2D9]">
                     <div className="flex items-start gap-2">
                       <div className="flex-shrink-0 mt-1">
                         {item.type === 'activity' ? (
-                          <svg className="w-5 h-5 text-[#0EA5A4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4 text-[#0EA5A4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
                         ) : (
-                          <svg className="w-5 h-5 text-[#F97316]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4 text-[#F97316]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
                           </svg>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-[#0F172A] text-sm">{item.name}</p>
-                        <div className="flex items-center gap-2 mt-1 flex-wrap">
-                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#0EA5A4]/10 text-[#0EA5A4]">
+                        <p className="font-semibold text-[#0F172A] text-xs">{item.name}</p>
+                        <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-[#0EA5A4]/10 text-[#0EA5A4]">
                             {item.type === 'activity' ? 'Activity' : 'Destination'}
                           </span>
                           {item.destinationName && (
-                            <span className="text-xs text-[#64748B]">📍 {item.destinationName}</span>
+                            <span className="text-[10px] text-[#64748B]">📍 {item.destinationName}</span>
                           )}
-                          {item.price > 0 && (
-                            <span className="text-xs font-semibold text-[#0F172A]">
-                              {item.currency} {item.price.toFixed(2)}
+                          {Number(item.price) > 0 && (
+                            <span className="text-[10px] font-semibold text-[#0F172A]">
+                              {item.currency} {Number(item.price).toFixed(2)}
                             </span>
                           )}
                         </div>
@@ -126,8 +134,8 @@ export default function ContactForm({ onClose, cartItems, onSuccess }: ContactFo
                   </div>
                 ))}
               </div>
-              <div className="mt-3 pt-3 border-t border-[#E7E2D9]">
-                <p className="text-xs text-[#64748B]">
+              <div className="mt-2 pt-2 border-t border-[#E7E2D9]">
+                <p className="text-[11px] text-[#64748B]">
                   💡 These items will be included in your enquiry for personalized assistance
                 </p>
               </div>
@@ -136,11 +144,11 @@ export default function ContactForm({ onClose, cartItems, onSuccess }: ContactFo
 
           {/* Name */}
           <div>
-            <label htmlFor="name" className="block text-sm font-bold text-[#0F172A] mb-2">
+            <label htmlFor="name" className="block text-xs font-bold text-[#0F172A] mb-1">
               Full Name *
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
+              <User className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748B]" />
               <input
                 type="text"
                 id="name"
@@ -148,7 +156,7 @@ export default function ContactForm({ onClose, cartItems, onSuccess }: ContactFo
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-[#E7E2D9] focus:border-[#0EA5A4] focus:ring-2 focus:ring-[#0EA5A4]/20 transition-all outline-none smooth-hover"
+                className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-[#E7E2D9] focus:border-[#0EA5A4] focus:ring-2 focus:ring-[#0EA5A4]/20 transition-all outline-none smooth-hover text-sm"
                 placeholder="John Doe"
               />
             </div>
@@ -156,11 +164,11 @@ export default function ContactForm({ onClose, cartItems, onSuccess }: ContactFo
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-bold text-[#0F172A] mb-2">
+            <label htmlFor="email" className="block text-xs font-bold text-[#0F172A] mb-1">
               Email Address *
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
+              <Mail className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748B]" />
               <input
                 type="email"
                 id="email"
@@ -168,7 +176,7 @@ export default function ContactForm({ onClose, cartItems, onSuccess }: ContactFo
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-[#E7E2D9] focus:border-[#0EA5A4] focus:ring-2 focus:ring-[#0EA5A4]/20 transition-all outline-none smooth-hover"
+                className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-[#E7E2D9] focus:border-[#0EA5A4] focus:ring-2 focus:ring-[#0EA5A4]/20 transition-all outline-none smooth-hover text-sm"
                 placeholder="john@example.com"
               />
             </div>
@@ -176,15 +184,15 @@ export default function ContactForm({ onClose, cartItems, onSuccess }: ContactFo
 
           {/* Phone */}
           <div>
-            <label htmlFor="phoneNumber" className="block text-sm font-bold text-[#0F172A] mb-2">
+            <label htmlFor="phoneNumber" className="block text-xs font-bold text-[#0F172A] mb-1">
               Phone Number
             </label>
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <select
                 name="phoneCountryCode"
                 value={formData.phoneCountryCode}
                 onChange={handleChange}
-                className="px-3 py-3 rounded-xl border-2 border-[#E7E2D9] focus:border-[#0EA5A4] focus:ring-2 focus:ring-[#0EA5A4]/20 transition-all outline-none smooth-hover"
+                className="px-2.5 py-2.5 rounded-lg border border-[#E7E2D9] focus:border-[#0EA5A4] focus:ring-2 focus:ring-[#0EA5A4]/20 transition-all outline-none smooth-hover text-sm"
               >
                 <option value="+1">+1</option>
                 <option value="+44">+44</option>
@@ -197,14 +205,14 @@ export default function ContactForm({ onClose, cartItems, onSuccess }: ContactFo
                 <option value="+39">+39</option>
               </select>
               <div className="relative flex-1">
-                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
+                <Phone className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748B]" />
                 <input
                   type="tel"
                   id="phoneNumber"
                   name="phoneNumber"
                   value={formData.phoneNumber}
                   onChange={handleChange}
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-[#E7E2D9] focus:border-[#0EA5A4] focus:ring-2 focus:ring-[#0EA5A4]/20 transition-all outline-none smooth-hover"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-[#E7E2D9] focus:border-[#0EA5A4] focus:ring-2 focus:ring-[#0EA5A4]/20 transition-all outline-none smooth-hover text-sm"
                   placeholder="123-456-7890"
                 />
               </div>
@@ -213,18 +221,18 @@ export default function ContactForm({ onClose, cartItems, onSuccess }: ContactFo
 
           {/* Message */}
           <div>
-            <label htmlFor="message" className="block text-sm font-bold text-[#0F172A] mb-2">
+            <label htmlFor="message" className="block text-xs font-bold text-[#0F172A] mb-1">
               Message
             </label>
             <div className="relative">
-              <MessageSquare className="absolute left-3 top-3 w-5 h-5 text-[#64748B]" />
+              <MessageSquare className="absolute left-2.5 top-2.5 w-4 h-4 text-[#64748B]" />
               <textarea
                 id="message"
                 name="message"
-                rows={4}
+                rows={3}
                 value={formData.message}
                 onChange={handleChange}
-                className="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-[#E7E2D9] focus:border-[#0EA5A4] focus:ring-2 focus:ring-[#0EA5A4]/20 transition-all outline-none resize-none smooth-hover"
+                className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-[#E7E2D9] focus:border-[#0EA5A4] focus:ring-2 focus:ring-[#0EA5A4]/20 transition-all outline-none resize-none smooth-hover text-sm"
                 placeholder="Tell us about your travel plans or any questions you have..."
               />
             </div>
@@ -232,7 +240,7 @@ export default function ContactForm({ onClose, cartItems, onSuccess }: ContactFo
 
           {/* Error Message */}
           {error && (
-            <div className="bg-[#F97316]/10 border border-[#F97316]/30 text-[#F97316] px-4 py-3 rounded-xl text-sm animate-slide-in">
+            <div className="bg-[#F97316]/10 border border-[#F97316]/30 text-[#F97316] px-3 py-2 rounded-lg text-xs animate-slide-in">
               {error}
             </div>
           )}
@@ -241,12 +249,12 @@ export default function ContactForm({ onClose, cartItems, onSuccess }: ContactFo
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-4 rounded-xl bg-gradient-to-r from-[#0EA5A4] to-[#0EA5A4]/90 hover:from-[#0EA5A4]/90 hover:to-[#0EA5A4] disabled:from-[#E7E2D9] disabled:to-[#E7E2D9] text-white font-bold text-lg shadow-lg hover:shadow-xl disabled:cursor-not-allowed transition-all duration-300 smooth-hover"
+            className="w-full py-3 rounded-lg bg-gradient-to-r from-[#0EA5A4] to-[#0EA5A4]/90 hover:from-[#0EA5A4]/90 hover:to-[#0EA5A4] disabled:from-[#E7E2D9] disabled:to-[#E7E2D9] text-white font-bold text-base shadow-md hover:shadow-lg disabled:cursor-not-allowed transition-all duration-300 smooth-hover"
           >
             {isSubmitting ? "Submitting..." : "Submit Enquiry"}
           </button>
 
-          <p className="text-xs text-[#64748B] text-center">
+          <p className="text-[11px] text-[#64748B] text-center">
             By submitting, you agree to receive communications from YourBrand Tours
           </p>
         </form>

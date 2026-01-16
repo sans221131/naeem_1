@@ -3,7 +3,7 @@ import { enquiries } from "../../../../../db/schema";
 import { eq, desc } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(_request: NextRequest) {
+export async function GET() {
   try {
     // Fetch all enquiries, ordered by most recent first
     const allEnquiries = await db

@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import AddToCartButton from "@/components/AddToCartButton";
+import ContactForm from "@/components/ContactForm";
 
 interface Country {
   id: string;
@@ -64,6 +65,8 @@ const countries: Country[] = [
 ];
 
 export default function DestinationsPage() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Header */}
@@ -129,21 +132,18 @@ export default function DestinationsPage() {
                 <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-500/30 rounded-2xl transition-colors pointer-events-none" />
               </Link>
 
-              {/* Add to Cart Button */}
-              <div className="absolute bottom-5 left-5 right-5 z-10">
-                <AddToCartButton
-                  item={{
-                    id: `destination-${country.id}`,
-                    type: "destination",
-                    name: country.name,
-                    destinationId: country.id,
-                    price: 0,
-                    currency: "USD",
-                    imageUrl: country.image,
+              {/* Enquire Now Button */}
+              <div className="absolute bottom-4 left-4 right-4 z-20">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsContactOpen(true);
                   }}
-                  variant="secondary"
-                  className="w-full"
-                />
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-[#0EA5A4] to-[#0EA5A4]/90 hover:from-[#0EA5A4]/90 hover:to-[#0EA5A4] text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all smooth-hover active:scale-95"
+                >
+                  Enquire Now
+                </button>
               </div>
             </div>
           ))}
@@ -170,6 +170,15 @@ export default function DestinationsPage() {
           </Link>
         </div>
       </div>
+
+      {/* Contact Form Modal */}
+      {isContactOpen && (
+        <ContactForm
+          onClose={() => setIsContactOpen(false)}
+          cartItems={[]}
+          onSuccess={() => setIsContactOpen(false)}
+        />
+      )}
     </main>
   );
 }

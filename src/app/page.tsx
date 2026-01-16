@@ -2,6 +2,7 @@ import { db } from "../../db/client";
 import { Activity, activities as activitiesTable } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import HeroBanner from "../components/HeroBanner";
+import ClientOnly from "../components/ClientOnly";
 import CountriesSection from "../components/CountriesSection";
 import FAQSection from "../components/FAQSection";
 import ReviewsSection from "@/components/review";
@@ -65,18 +66,28 @@ export default async function Home() {
   return (
     <main className="min-h-screen">
       {heroActivities.length > 0 ? (
-        <HeroBanner activities={heroActivities as unknown as Activity[]} />
+        <ClientOnly>
+          <HeroBanner activities={heroActivities as unknown as Activity[]} />
+        </ClientOnly>
       ) : (
         <div className="flex items-center justify-center py-20">
           <p className="text-center text-gray-600">No featured activities available at the moment.</p>
         </div>
       )}
-      <CountriesSection activities={randomActivities as unknown as Activity[]} />
-      <ReviewsSection />
-      <FAQSection />
+      <ClientOnly>
+        <CountriesSection activities={randomActivities as unknown as Activity[]} />
+      </ClientOnly>
+      <ClientOnly>
+        <ReviewsSection />
+      </ClientOnly>
+      <ClientOnly>
+        <FAQSection />
+      </ClientOnly>
       
       {/* Floating Contact Button */}
-      <ContactButton variant="floating" sourcePage="/" />
+      <ClientOnly>
+        <ContactButton variant="floating" sourcePage="/" />
+      </ClientOnly>
     </main>
 	);
 }

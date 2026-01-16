@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { CartProvider } from "../contexts/CartContext";
+import Providers from "../components/Providers";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -31,11 +31,11 @@ export default function RootLayout({
 				<link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
 			</head>
 			<body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				<CartProvider>
-					<Header />
-					{children}
-					<Footer />
-				</CartProvider>
+										<Header />
+										<Providers>
+											{children}
+										</Providers>
+										<Footer />
 			</body>
 		</html>
 	);

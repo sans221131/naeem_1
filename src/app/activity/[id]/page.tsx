@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import BookingCard from "./BookingCard";
-import AddToCartButton from "../../../components/AddToCartButton";
 
 interface ActivityPageProps {
   params: Promise<{ id: string }>;
@@ -25,47 +24,98 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
     notFound();
   }
 
-  // Parse description to extract highlights, inclusions, exclusions
+  // Parse description to extract highlights, inclusions, exclusions, and extra sections
   const parseDescription = (desc: string) => {
+    const normalized = desc
+      .replace(/\\n/g, "\n")
+      .replace(/\r\n/g, "\n")
+      .replace(/\u2019/g, "'")
+      .replace(/’/g, "'");
     const sections = {
       highlights: [] as string[],
       inclusions: [] as string[],
       exclusions: [] as string[],
+      extraSections: [] as { title: string; items: string[] }[],
       overview: "",
     };
 
-    // Split by bullets and extract items
-    const lines = desc.split("\n");
-    let currentSection = "overview";
-    let overviewText = "";
+    const lines = normalized.split("\n");
+    let currentSection: string = "overview";
+    let currentExtraTitle = "";
+    const overviewParts: string[] = [];
+
+    const startExtraSection = (title: string) => {
+      const existing = sections.extraSections.find((section) => section.title === title);
+      if (!existing) {
+        sections.extraSections.push({ title, items: [] });
+      }
+      currentExtraTitle = title;
+      currentSection = "extra";
+    };
+
+    const addExtraItem = (text: string) => {
+      const target = sections.extraSections.find((section) => section.title === currentExtraTitle);
+      if (target) target.items.push(text);
+    };
 
     for (const line of lines) {
       const trimmed = line.trim();
-      
-      // Check for section headers
-      if (trimmed.toLowerCase().includes("highlight")) {
+      if (!trimmed) continue;
+
+      const headerCandidate = trimmed.replace(/[:\-]+$/, "").trim();
+      const lower = headerCandidate.toLowerCase();
+
+      if (lower.includes("highlight")) {
         currentSection = "highlights";
         continue;
-      } else if (trimmed.toLowerCase().includes("inclusion") || trimmed.toLowerCase().includes("include")) {
+      }
+      if (lower.includes("what's included") || lower.includes("whats included") || lower.includes("included") || lower.includes("inclusion")) {
         currentSection = "inclusions";
         continue;
-      } else if (trimmed.toLowerCase().includes("exclusion") || trimmed.toLowerCase().includes("exclude")) {
+      }
+      if (lower.includes("not included") || lower.includes("exclusion") || lower.includes("exclude")) {
         currentSection = "exclusions";
         continue;
       }
+      if (
+        lower.includes("who it's for") ||
+        lower.includes("who its for") ||
+        lower.includes("eligibility") ||
+        lower.includes("requirements") ||
+        lower.includes("rules") ||
+        lower.includes("good to know") ||
+        lower.includes("what you'll actually do") ||
+        lower.includes("what youll actually do") ||
+        lower.includes("what you will do") ||
+        lower.includes("what you'll do") ||
+        lower.includes("what youll do")
+      ) {
+        startExtraSection(headerCandidate);
+        continue;
+      }
 
-      // Extract bullet points
-      if (trimmed.match(/^[-•*]\s+/)) {
-        const text = trimmed.replace(/^[-•*]\s+/, "");
-        if (currentSection === "highlights") sections.highlights.push(text);
-        else if (currentSection === "inclusions") sections.inclusions.push(text);
-        else if (currentSection === "exclusions") sections.exclusions.push(text);
-      } else if (trimmed && currentSection === "overview") {
-        overviewText += trimmed + " ";
+      const isBullet = /^[-•*]\s+/.test(trimmed);
+      const text = isBullet ? trimmed.replace(/^[-•*]\s+/, "") : trimmed;
+
+      switch (currentSection) {
+        case "highlights":
+          sections.highlights.push(text);
+          break;
+        case "inclusions":
+          sections.inclusions.push(text);
+          break;
+        case "exclusions":
+          sections.exclusions.push(text);
+          break;
+        case "extra":
+          addExtraItem(text);
+          break;
+        default:
+          overviewParts.push(text);
       }
     }
 
-    sections.overview = overviewText.trim() || desc;
+    sections.overview = overviewParts.join("\n").trim() || normalized.trim();
     return sections;
   };
 
@@ -123,20 +173,7 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
               <span className="text-xs text-gray-500">per person</span>
             </div>
             
-            {/* Quick Booking CTA */}
-            <AddToCartButton
-              item={{
-                id: activity.id,
-                type: "activity",
-                name: activity.name,
-                destinationId: activity.destinationId,
-                price: typeof activity.price === "string" ? parseFloat(activity.price) : Number(activity.price),
-                currency: activity.currency,
-                imageUrl: activity.imageUrl || undefined,
-              }}
-              variant="primary"
-              className="!py-2.5 !px-5 text-sm whitespace-nowrap"
-            />
+            {/* Quick Booking CTA removed (cart system disabled) */}
           </div>
         </div>
 
@@ -224,6 +261,25 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
             </div>
           )}
 
+          {parsed.extraSections.map((section, sectionIndex) => (
+            <div key={sectionIndex} className="bg-white rounded-xl p-4 shadow-md">
+              <h2 className="text-base font-black text-gray-900 mb-3 flex items-center gap-2">
+                <span>🧾</span>
+                <span>{section.title}</span>
+              </h2>
+              <ul className="space-y-2">
+                {section.items.map((item, itemIndex) => (
+                  <li key={itemIndex} className="flex items-start gap-2 text-sm text-gray-700">
+                    <svg className="w-4 h-4 text-slate-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0 1 1 0 002 0zm-1 3a1 1 0 00-1 1v5a1 1 0 002 0V9a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
           {/* Important Info Card */}
           <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-4 shadow-md border border-amber-200">
             <h2 className="text-base font-black text-gray-900 mb-3 flex items-center gap-2">
@@ -252,9 +308,16 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
             </ul>
           </div>
 
-          {/* Mobile Booking Card */}
-          <div className="bg-white rounded-xl shadow-lg p-4">
-            <BookingCard activity={activity} formatPrice={formatPrice()} />
+          {/* Mobile Booking Card removed */}
+          <div>
+            {/* Booking card (mobile) */}
+            <div className="lg:hidden px-0">
+              {/* dynamically loaded client component */}
+              <BookingCard
+                price={typeof activity.price === "string" ? parseFloat(activity.price) : Number(activity.price)}
+                currency={activity.currency}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -400,6 +463,25 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
               </section>
             )}
 
+            {parsed.extraSections.map((section, sectionIndex) => (
+              <section key={sectionIndex} className="bg-white rounded-2xl p-6 md:p-8 shadow-lg ring-1 ring-black/5">
+                <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-6 flex items-center gap-3">
+                  <span className="text-slate-600">🧾</span>
+                  {section.title}
+                </h2>
+                <ul className="space-y-3">
+                  {section.items.map((item, itemIndex) => (
+                    <li key={itemIndex} className="flex items-start gap-3 text-gray-700">
+                      <svg className="w-5 h-5 text-slate-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0 1 1 0 002 0zm-1 3a1 1 0 00-1 1v5a1 1 0 002 0V9a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+
             {/* Important Information */}
             <section className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 md:p-8 shadow-lg ring-1 ring-amber-200">
               <h2 className="text-2xl md:text-3xl font-black text-gray-900 mb-6 flex items-center gap-3">
@@ -435,10 +517,13 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
             </section>
           </div>
 
-          {/* Right Column - Booking Card */}
+          {/* Right Column - Booking card */}
           <div className="lg:col-span-1">
-            <div className="sticky top-6">
-              <BookingCard activity={activity} formatPrice={formatPrice()} />
+            <div className="sticky top-24">
+              <BookingCard
+                price={typeof activity.price === "string" ? parseFloat(activity.price) : Number(activity.price)}
+                currency={activity.currency}
+              />
             </div>
           </div>
         </div>
@@ -447,3 +532,5 @@ export default async function ActivityPage({ params }: ActivityPageProps) {
     </main>
   );
 }
+
+// BookingCard is a client component imported directly above.

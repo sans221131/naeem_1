@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { Activity } from "../../db/schema";
+import ContactForm from "./ContactForm";
 
 interface Destination {
   id: string;
@@ -39,6 +40,7 @@ function truncate(text: string, maxLength: number): string {
 
 export default function CountriesSection({ activities }: { activities: Activity[] }) {
   const [activeDestination, setActiveDestination] = useState<string>(destinations[0].id);
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   const filteredActivities = useMemo(() => {
     return activities
@@ -124,10 +126,10 @@ export default function CountriesSection({ activities }: { activities: Activity[
                 <Link
                   href={`/activity/${activity.id}`}
                   key={activity.id}
-                  className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 ring-1 ring-[#E7E2D9] hover:ring-[#0EA5A4]/50 hover:-translate-y-1 block smooth-hover animate-fade-in"
+                  className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 ring-1 ring-[#E7E2D9] hover:ring-[#0EA5A4]/50 hover:-translate-y-1 block smooth-hover animate-fade-in flex flex-col h-full"
                 >
                   {/* Image */}
-                  <div className="relative h-56 bg-gradient-to-br from-[#FAF7F2] to-[#E7E2D9] overflow-hidden">
+                  <div className="relative h-56 bg-gradient-to-br from-[#FAF7F2] to-[#E7E2D9] overflow-hidden flex-shrink-0">
                     {activity.imageUrl ? (
                       <Image
                         src={activity.imageUrl}
@@ -172,16 +174,30 @@ export default function CountriesSection({ activities }: { activities: Activity[
                   </div>
 
                   {/* Content */}
-                  <div className="p-5">
+                  <div className="p-5 flex flex-col flex-grow">
                     <h3 className="font-bold text-lg text-[#0F172A] mb-2 line-clamp-2 group-hover:text-[#0EA5A4] transition-colors smooth-hover">
                       {activity.name}
                     </h3>
-                    <p className="text-sm text-[#64748B] line-clamp-3 leading-relaxed">
+                    <p className="text-sm text-[#64748B] line-clamp-3 leading-relaxed mb-4 flex-grow">
                       {truncate(activity.description, 120)}
                     </p>
                     
-                    <div className="mt-4 w-full py-2.5 rounded-xl bg-gradient-to-r from-[#FAF7F2] to-white group-hover:from-white group-hover:to-[#FAF7F2] text-[#0F172A] font-semibold text-sm transition-all duration-300 ring-1 ring-[#E7E2D9] group-hover:ring-[#0EA5A4] group-hover:shadow-md text-center">
-                      View Details →
+                    <div className="mt-auto space-y-3">
+                      <div className="w-full h-10 flex items-center justify-center rounded-xl bg-gradient-to-r from-[#FAF7F2] to-white group-hover:from-white group-hover:to-[#FAF7F2] text-[#0F172A] font-semibold text-sm transition-all duration-300 ring-1 ring-[#E7E2D9] group-hover:ring-[#0EA5A4] group-hover:shadow-md text-center">
+                        View Details →
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          setIsContactOpen(true);
+                        }}
+                        className="w-full h-11 flex items-center justify-center rounded-xl bg-gradient-to-r from-[#0EA5A4] to-[#0EA5A4]/90 text-white font-bold text-sm shadow-md hover:shadow-lg transition"
+                      >
+                        Enquire Now
+                      </button>
                     </div>
                   </div>
                 </Link>
@@ -189,6 +205,14 @@ export default function CountriesSection({ activities }: { activities: Activity[
             </div>
         )}
       </div>
+
+      {isContactOpen && (
+        <ContactForm
+          onClose={() => setIsContactOpen(false)}
+          cartItems={[]}
+          onSuccess={() => setIsContactOpen(false)}
+        />
+      )}
     </section>
   );
 }
