@@ -1,4 +1,5 @@
 import ContactButton from "./ContactButton";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -35,19 +36,19 @@ export default function Footer() {
             <h4 className="font-semibold mb-4 text-white">Quick Links</h4>
             <ul className="space-y-2 text-sm text-[#64748B]">
               <li>
-                <a href="/destinations" className="hover:text-[#0EA5A4] smooth-hover transition-colors">
+                <Link href="/destinations" className="hover:text-[#0EA5A4] smooth-hover transition-colors">
                   Destinations
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/#faq" className="hover:text-[#0EA5A4] smooth-hover transition-colors">
+                <Link href="/#faq" className="hover:text-[#0EA5A4] smooth-hover transition-colors">
                   FAQ
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/cart" className="hover:text-[#0EA5A4] smooth-hover transition-colors">
+                <Link href="/cart" className="hover:text-[#0EA5A4] smooth-hover transition-colors">
                   View Cart
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -80,12 +81,12 @@ export default function Footer() {
               © 2026 YourBrand Tours. All rights reserved.
             </p>
             <div className="flex flex-wrap gap-4 items-center">
-              <a href="/privacy" className="text-sm text-[#64748B] hover:text-[#0EA5A4] smooth-hover transition-colors">
+              <Link href="/privacy" className="text-sm text-[#64748B] hover:text-[#0EA5A4] smooth-hover transition-colors">
                 Privacy Policy
-              </a>
-              <a href="/terms" className="text-sm text-[#64748B] hover:text-[#0EA5A4] smooth-hover transition-colors">
+              </Link>
+              <Link href="/terms" className="text-sm text-[#64748B] hover:text-[#0EA5A4] smooth-hover transition-colors">
                 Terms & Conditions
-              </a>
+              </Link>
             </div>
           </div>
         </div>
