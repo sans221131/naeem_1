@@ -1,5 +1,5 @@
-import ContactButton from "./ContactButton";
 import Link from "next/link";
+import ContactButton from "./ContactButton";
 
 export default function Footer() {
   return (
